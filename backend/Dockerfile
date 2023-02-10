@@ -27,4 +27,6 @@ RUN php artisan config:cache && \
     chown -R www-data:www-data /var/www/ && \
     a2enmod rewrite
 
+RUN php artisan migrate
+
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf

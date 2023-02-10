@@ -1,0 +1,36 @@
+version: '3.8'
+services:
+  backend:
+    container_name: diary_backend
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:80"
+    volumes:
+      - ./backend/:/var/www/html/
+      - ./backend/xdebug/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+      - ./backend/xdebug/error_reporting.ini:/usr/local/etc/php/conf.d/error_reporting.ini
+
+  db:
+    container_name: diary_db
+    image: mysql:8
+    environment:
+      MYSQL_DATABASE: "diaryModel"
+      MYSQL_USER: MYSQL_USER
+      MYSQL_PASSWORD: MYSQL_PASSWORD
+      MYSQL_ROOT_PASSWORD: MYSQL_ROOT_PASSWORD
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./db:/var/lib/mysql
+
+  phpmyadmin:
+    container_name: diary_phpmyadmin
+    platform: linux/amd64
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - '8081:80'
+    depends_on:
+      - db
+

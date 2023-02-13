@@ -112,6 +112,10 @@ export default {
             title: this.title,
             diary_text: this.diary_text,
             user_id: localStorage.user_id,
+          }, {
+            headers: {
+              'Authorization': `Bearer ` + localStorage.usertoken
+            }
           })
           .then(response => this.ListDiaryPosts())
           .catch((err) => {
@@ -120,7 +124,11 @@ export default {
           })
     },
     ListDiaryPosts() {
-      axios.get('http://localhost:8000/api/v1/diary/list/' + localStorage.user_id)
+      axios.get('http://localhost:8000/api/v1/diary/list/' + localStorage.user_id, {
+        headers: {
+          'Authorization': `Bearer ` + localStorage.usertoken
+        }
+      })
           .then(response => this.diary_posts = response.data)
           .catch((err) => {
             console.error(err)
@@ -128,7 +136,11 @@ export default {
           })
     },
     deleteDiaryPost(id) {
-      axios.delete('http://localhost:8000/api/v1/diary/' + id)
+      axios.delete('http://localhost:8000/api/v1/diary/' + id, {
+        headers: {
+          'Authorization': `Bearer ` + localStorage.usertoken
+        }
+      })
           .then(response => this.ListDiaryPosts())
           .catch((err) => {
             console.error(err)
@@ -138,7 +150,11 @@ export default {
     startEditDiaryPost(id) {
       this.edit_mode = true;
       this.edit_post = id;
-      axios.get('http://localhost:8000/api/v1/diary/' + id)
+      axios.get('http://localhost:8000/api/v1/diary/' + id, {
+        headers: {
+          'Authorization': `Bearer ` + localStorage.usertoken
+        }
+      })
           .then(
               response => [
                 this.title = response.data.data.title,
@@ -155,12 +171,16 @@ export default {
         title: this.title,
         diary_text: this.diary_text,
         user_id: localStorage.user_id,
+      }, {
+        headers: {
+          'Authorization': `Bearer ` + localStorage.usertoken
+        }
       })
           .then(
               response =>
-                this.ListDiaryPosts(),
-                this.title = '',
-                this.diary_text = ''
+                  this.ListDiaryPosts(),
+              this.title = '',
+              this.diary_text = ''
           )
           .catch((err) => {
             console.error(err)

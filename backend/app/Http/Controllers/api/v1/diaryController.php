@@ -48,7 +48,7 @@ class diaryController extends Controller
 
     private function checkAuth() {
         $loggedInUser = User::where('auth_token', request()->bearerToken())->get();
-        if ($loggedInUser->isEmpty()){
+        if ($loggedInUser->isEmpty() || is_null(request()->bearerToken())){
             abort(response()->json(['error' => 'Unauthenticated.'], 401));
         } else {
             return true;
